@@ -4,24 +4,53 @@ from nltk.chat.util import Chat, reflections
 import requests
 import time
 from datetime import datetime
-from data import *; #from functions import *
+from functions import *
+from data import *; 
+import eliza
 
 HEIGHT = 500
 WIDTH = 600
 
-chat = Chat(pairs,reflections)
+iteration = 1
 
-#функция вывода текста в лейбл
+chat = Chat(pairs, reflections)
+
+#функция вывода текста в лейблwor
 def mprint(text):
-	label['text'] = text
+	global iteration
+	label['text'] = ("iteration: " + str(iteration) + "\n" + text)
+	iteration = iteration + 1
 
-#главная функция в которой обрабатываются события
+activateElisa = 0
+#главная функция в которой обрабатываются событи
 def main(text):
-	mprint(chat.respond(str(text)))#str(text))
+	global activateElisa
+	
+	if(text=="info"):
+		mprint(helpInfo)
+	elif(str.lower(text)=="hello elisa"):
+		activateElisa = 1
+		mprint(eliza.eliza_chatbot.respond(str(text)))
+	if(activateElisa==1):
+		if(text=="quit"):
+			activateElisa=0
+		mprint(eliza.eliza_chatbot.respond(str(text)))
+
+	else:
+		if (chat.respond(str(text))):
+			mprint(chat.respond(str(text)))
+		else:
+			if (isQuestion(text)):
+				if (typeQuestion(text)):
+					mprint(typeQuestion(text))
+				else:
+					try:
+						mprint(eliza.eliza_chatbot.respond(str(text)))
+					except:
+						mprint("Sorry, I don't clearly understand. Let's talk about something else. By the way, " + str(random.choise(compliments)))
+
 
 root = tk.Tk()
-
-
 
 canvas = tk.Canvas(root, height=HEIGHT, width=WIDTH)
 canvas.pack()
@@ -42,34 +71,8 @@ button.place(relx=0.7, relheight=1, relwidth=0.3)
 lower_frame = tk.Frame(root, bg='#80c1ff', bd=10)
 lower_frame.place(relx=0.5, rely=0.25, relwidth=0.75, relheight=0.6, anchor='n')
 
-label = tk.Label(lower_frame)
+label = tk.Label(lower_frame, wraplength=300)
 label.place(relwidth=1, relheight=1)
 
 root.mainloop()
 
-
-
-"""
-#формат запроса погоды
-def format_response(weather):
-	try:
-		name = weather['name']
-		desc = weather['weather'][0]['description']
-		temp = weather['main']['temp']
-
-		final_str = 'City: %s \nConditions: %s \nTemperature (°F): %s' % (name, desc, temp)
-	except:
-		final_str = 'There was a problem retrieving that information'
-
-	return final_str
-
-#поиск погоды (перепесать под бота)
-def get_weather(city):
-	weather_key = 'a4aa5e3d83ffefaba8c00284de6ef7c3'
-	url = 'https://api.openweathermap.org/data/2.5/weather'
-	params = {'APPID': weather_key, 'q': city, 'units': 'celsius'}
-	response = requests.get(url, params=params)
-	weather = response.json()
-
-	label['text'] = format_response(weather)
-"""
