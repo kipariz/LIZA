@@ -11,10 +11,3 @@ BotApp.py is the main file in this project. You can speak with elisa bot by typi
 
 Now the logic of this bot is simple. It's try to find answer to your speach in pairs (use nltk library for this purpose). If some trouble occur it's try to find information in wikipedia (if you ask some question). If even this did't help it call elisa bot to speak with you.
 
-###### To do list:
-* Clean up the code (It can look much better)
-* Add more languages that bot can understand (I thought about adding Japanese, Russian, Ukrainian and maybe Spanish)
-* PYQT version (but I'm not quite sure about this)
-
-
-I have some ideas so maybe will create more advanced bots later. 
