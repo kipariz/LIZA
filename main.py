@@ -40,17 +40,17 @@ def error(update, context):
 
 if __name__ == "__main__":
     """Start the bot."""
-    NAME = "lizatelegrambot"
+    NAME = os.environ.get("HEROKU_APP_NAME")
     TOKEN = os.environ["TOKEN"]
 
     # Port is given by Heroku
-    PORT = os.environ.get('PORT')
+    PORT = int(os.environ.get("PORT", "8443"))
 
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
     logger = logging.getLogger(__name__)
 
-    updater = Updater(TOKEN, use_context=True)
+    updater = Updater(TOKEN)
 
     dp = updater.dispatcher
 
@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     # Start the webhook
     updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
+                          port=PORT ,
                           url_path=TOKEN)
     updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
     updater.idle()
