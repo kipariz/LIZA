@@ -52,16 +52,16 @@ if __name__ == "__main__":
 
     updater = Updater(TOKEN)
 
-    dp = updater.dispatcher
+    dispatcher = updater.dispatcher
 
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
-    dp.add_handler(MessageHandler(Filters.text, answer))
-    dp.add_error_handler(error)
+    dispatcher.add_handler(CommandHandler("start", start))
+    dispatcher.add_handler(CommandHandler("help", help))
 
-    # Start the webhook
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, answer))
+
     updater.start_webhook(listen="0.0.0.0",
                           port=PORT ,
                           url_path=TOKEN)
     updater.bot.setWebhook("https://{}.herokuapp.com/{}".format(NAME, TOKEN))
+
     updater.idle()
