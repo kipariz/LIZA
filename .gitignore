@@ -1,7 +1,6 @@
-__pycache__/
+# vs code extension
 .vscode/
+.history
+
+__pycache__/
 venv/
-/notrequirements.txt
-/photo.png
-/photo_source.txt
-/test.py
